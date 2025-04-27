@@ -1,6 +1,6 @@
 # Function to get the Azure subscription or default if not set
 function az_subscription_prompt() {
-  local az_subscription="$(az account show --query name -o tsv 2>/dev/null || echo 'default')"
+  local az_subscription="$(az account show --query name -o tsv 2>/dev/null || echo 'none')"
   echo " | az:${az_subscription}"
 }
 
