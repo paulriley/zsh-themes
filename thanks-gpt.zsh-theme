@@ -15,7 +15,7 @@ function git_status_prompt() {
 }
 
 NEWLINE=$'\n'
-PROMPT='%(?,%{$fg[white]%},%{$fg_bold[red]%})%{$fg[cyan]%}%n@%m%{$reset_color%} %{$fg[white]%}[%*]%{$reset_color%}$(aws_profile_prompt)$(git_prompt_info) | %{$fg[blue]%}%~%{$reset_color%}${NEWLINE}%(!.#.❯) '
+PROMPT='%(?,%{$fg[white]%},%{$fg_bold[red]%})%{$fg[cyan]%}%n@%m%{$reset_color%} %{$fg[white]%}[%*]%{$reset_color%}$(aws_profile_prompt)$(git_prompt_info) | %{$fg[blue]%}%~%{$reset_color%}${NEWLINE}%(?,%(!.#.>),%(!.#.!)) '
 
 ZSH_THEME_GIT_PROMPT_PREFIX=" | %{$fg[green]%}git:"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
