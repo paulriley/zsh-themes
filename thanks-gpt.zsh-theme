@@ -1,7 +1,23 @@
-# Function to get the AWS profile or default if not set
-function aws_profile_prompt() {
-  local aws_profile="${AWS_PROFILE:-default}"
-  echo " | aws:${aws_profile}"
+# Function to get cloud profile (AWS or Azure) if available
+function cloud_profile_prompt() {
+  local output=""
+  
+  # Check for AWS profile
+  if [[ -n "${AWS_PROFILE}" ]]; then
+    output="${output} | aws:${AWS_PROFILE}"
+  fi
+  
+  # Check for Azure subscription
+  local azure_subscription=""
+  if command -v az &> /dev/null; then
+    azure_subscription=$(az account show --query name -o tsv 2>/dev/null)
+  fi
+  
+  if [[ -n "$azure_subscription" ]]; then
+    output="${output} | azure:${azure_subscription}"
+  fi
+  
+  echo "$output"
 }
 
 # Function to check if the Git branch is up-to-date
@@ -15,7 +31,7 @@ function git_status_prompt() {
 }
 
 NEWLINE=$'\n'
-PROMPT='%(?,%{$fg[white]%},%{$fg_bold[red]%})%{$fg[cyan]%}%n@%m%{$reset_color%} %{$fg[white]%}[%*]%{$reset_color%}$(aws_profile_prompt)$(git_prompt_info) | %{$fg[blue]%}%~%{$reset_color%}${NEWLINE}%(?,%(!.#.>),%(!.#.!)) '
+PROMPT='%(?,%{$fg[white]%},%{$fg_bold[red]%})%{$fg[cyan]%}%n@%m%{$reset_color%} %{$fg[white]%}[%*]%{$reset_color%}$(cloud_profile_prompt)$(git_prompt_info) | %{$fg[blue]%}%~%{$reset_color%}${NEWLINE}%(?,%(!.#.>),%(!.#.!)) '
 
 ZSH_THEME_GIT_PROMPT_PREFIX=" | %{$fg[green]%}git:"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
